@@ -7,58 +7,71 @@ import numpy as np
 import pandas as pd
 import re 
 import nltk
+import math
+
+# Split data
+from sklearn.model_selection import train_test_split
 
 # Normalize function
 from nltk.stem.snowball import SnowballStemmer
 
 # Pipeline
 from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer, TfidfVectorizer
 from sklearn.preprocessing import FunctionTransformer
 
+# Stopwords
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+nltk.download('stopwords')
+
+# Cosine simluarity
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Import database
 movies_db = pd.read_csv('imdb (1000 movies) in june 2022.csv')
 
 # Print database
-#print(movies_db.columns)
+print(movies_db.columns)
 
 # Print summary column 
 #print(movies_db['DETAIL ABOUT MOVIE\r\n'])
 
-# Normalize function that will tokenize, stem and filter special characters
-stemmer = SnowballStemmer("english", ignore_stopwords=False)
+# Split data into training and test 
+#movies_train, movies_test, target_train, target_test = train_test_split(movies_db['DETAIL ABOUT MOVIE\r\n'], movies_db['DETAIL ABOUT MOVIE\r\n'], test_size = 0.20, random_state = 12)
 
-def normalize(X):
-    normalized = []
-    for x in X:
-        words = nltk.word_tokenize(x)
-        normalized.append(' '.join([stemmer.stem(word) for word in words if re.match('[a-zA-Z]+', word)]))
-        return normalized
-    
-# Define pipline
-pipe = Pipeline([
-    # Apply the normalize function
-    ('normalize', FunctionTransformer(normalize, validate=False)),
+# Create TFI-DF matrix
+tfidf_vectorizer = TfidfVectorizer(stop_words=set(stopwords.words('english')))
+tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\r\n'])
 
-    # Vectorize all the documents using Bag of Words
-    # This step also removes stopwords
-    ('counter_vectorizer', CountVectorizer(
-        max_features=200000,
-        max_df = 1.0 ,min_df=0.9, stop_words='english',
-        ngram_range=(1,3)
-    )),
+print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
 
-    # Transform the Bag of Words into a TF-IDF matrix
-    ('tfidf_transform', TfidfTransformer())
-])
+# Calculate simularity 
+search_movie = 223
+cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
+print(cos_similarity)
+print(cos_similarity.shape)
 
-# Creating the TF-IDF matrix
-tfidf_matrix = pipe.fit_transform([x for x in movies_db['DETAIL ABOUT MOVIE\r\n']])
+# Find the movie that is closes to the given movie
+# Search for the cloest to the value sent in, returns the index number
+# calculate the difference array
+x = 1.0
+difference_array = np.absolute(cos_similarity-x)
 
-print(tfidf_matrix.toarray())
+# To remove those that are 100% the same cause then it's the same movie
+index = difference_array.argmin()
+difference_array = np.delete(difference_array, index)
 
+# Find the index of minimum element from the array
+index = difference_array.argmin()
+print(index)
 
+print("Searched movie: " + movies_db['movie name\r\n'][search_movie])
+print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][search_movie])
+
+print("\nFound movie name: " + movies_db['movie name\r\n'][index])
+print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][index])
+#print("Found movie degree: " + cos_similarity[0][index])
 
 
 
