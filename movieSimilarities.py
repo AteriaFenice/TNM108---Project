@@ -66,12 +66,16 @@ difference_array = np.delete(difference_array, index)
 index = difference_array.argmin()
 print(index)
 
-print("Searched movie: " + movies_db['movie name\r\n'][search_movie])
+# Take the cos similarity and calculate the angle
+angle_in_radius = math.acos(cos_similarity[search_movie][index])
+
+print("Movie title: " + movies_db['movie name\r\n'][search_movie])
 print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][search_movie])
 
-print("\nFound movie name: " + movies_db['movie name\r\n'][index])
+print("\nFound movie title: " + movies_db['movie name\r\n'][index])
 print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][index])
-#print("Found movie degree: " + cos_similarity[0][index])
+print("\nFound movie degree: ")
+print(math.degrees(angle_in_radians))
 
 
 
