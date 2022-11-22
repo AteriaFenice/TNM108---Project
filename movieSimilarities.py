@@ -29,6 +29,10 @@ from nltk.tokenize import word_tokenize
 # Cosine simluarity
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Dendogram
+import matplotlib.pyplot as plt
+from scipy.cluster.hierarchy import linkage, dendrogram
+
 # Import database
 movies_db = pd.read_csv('imdb (1000 movies) in june 2022.csv')
 
@@ -80,7 +84,11 @@ print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][search_movie])
 print("\nFound movie title: " + movies_db['movie name\r\n'][index])
 print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][index])
 
-
-
-
-
+# DENDOGRAM - works but messy!
+'''similarity_distance = 1 - cosine_similarity(tfidf_matrix)
+mergings = linkage(similarity_distance, method='complete')
+dendrogram_ = dendrogram(mergings, labels=[x for x in movies_db["movie name\r\n"]], leaf_rotation=90, leaf_font_size=16,)
+fig = plt.gcf()
+_ = [lbl.set_color('r') for lbl in plt.gca().get_xmajorticklabels()]
+fig.set_size_inches(108, 21)
+plt.show()'''
