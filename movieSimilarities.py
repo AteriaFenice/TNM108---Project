@@ -67,19 +67,19 @@ difference_array = np.delete(difference_array, index)
 
 # Find the index of minimum element from the array
 index = difference_array.argmin()
-print("Index of found movie: ", index)
-print("Max similarity: ", 1.0-difference_array.min(), "\n") # print max similarity
 
 # Take the cos similarity and calculate the angle
-#angle_in_radius = math.acos(cos_similarity[search_movie][index])
+angle_in_radius = math.acos(cos_similarity[0][index])
+
+print("Index of found movie:\t", index)
+print("Max similarity:\t\t", 1.0-difference_array.min()) # print max similarity
+print("Found movie degree:\t", math.degrees(angle_in_radius), "\n")
 
 print("Movie title: " + movies_db['movie name\r\n'][search_movie])
 print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][search_movie])
 
 print("\nFound movie title: " + movies_db['movie name\r\n'][index])
 print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][index])
-print("\nFound movie degree: ")
-#print(math.degrees(angle_in_radians))
 
 
 
