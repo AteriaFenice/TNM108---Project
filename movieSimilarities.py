@@ -8,6 +8,7 @@ import pandas as pd
 import re 
 import nltk
 import math
+import random
 
 # Split data
 from sklearn.model_selection import train_test_split
@@ -47,8 +48,8 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\n'])
 #print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
 
 # Calculate simularity 
-search_movie = 223
-print("\nIndex of movie:\t\t", search_movie)
+search_movie = random.randint(0,999)
+print("Index of movie:\t\t", search_movie)
 cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
 #print(cos_similarity)
 #print(cos_similarity.shape)
