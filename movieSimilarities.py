@@ -47,13 +47,13 @@ movies_db = pd.read_csv('imdb (1000 movies) in june 2022.csv')
 
 # Create TFI-DF matrix
 tfidf_vectorizer = TfidfVectorizer(stop_words=set(stopwords.words('english')))
-tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\n'])
+tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\r\n'])
 
 #print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
 
 # Calculate simularity 
-search_movie = random.randint(0,999)
-print("\nIndex of movie:\t\t", search_movie)
+search_movie = random.randint(0,999) # Take a random movie from the database
+print("Index of movie: ", search_movie)
 cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
 #print(cos_similarity)
 #print(cos_similarity.shape)
@@ -74,15 +74,15 @@ index = difference_array.argmin()
 # Take the cos similarity and calculate the angle
 angle_in_radius = math.acos(cos_similarity[0][index])
 
-print("Index of found movie:\t", index)
-print("Max similarity:\t\t", 1.0-difference_array.min()) # print max similarity
-print("Found movie degree:\t", math.degrees(angle_in_radius), "\n")
+print("Index of found movie:", index)
+print("Max similarity:", 1.0-difference_array.min()) # print max similarity
+print("Found movie degree:", math.degrees(angle_in_radius), "\n")
 
 print("Movie title: " + movies_db['movie name\r\n'][search_movie])
-print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][search_movie])
+print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][search_movie])
 
 print("\nFound movie title: " + movies_db['movie name\r\n'][index])
-print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][index])
+print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][index])
 
 # DENDOGRAM - works but messy!
 '''similarity_distance = 1 - cosine_similarity(tfidf_matrix)
