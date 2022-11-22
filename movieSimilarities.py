@@ -48,7 +48,7 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\n'])
 
 # Calculate simularity 
 search_movie = 223
-print("Index of movie: ", search_movie)
+print("\nIndex of movie:\t\t", search_movie)
 cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
 #print(cos_similarity)
 #print(cos_similarity.shape)
@@ -65,8 +65,8 @@ difference_array = np.delete(difference_array, index)
 
 # Find the index of minimum element from the array
 index = difference_array.argmin()
-print("Index of found movie: ", index)
-print("Max similarity: ", 1.0-difference_array.min(), "\n") # print max similarity
+print("Index of found movie:\t", index)
+print("Max similarity:\t\t", 1.0-difference_array.min(), "\n") # print max similarity
 
 # Take the cos similarity and calculate the angle
 #angle_in_radius = math.acos(cos_similarity[search_movie][index])
