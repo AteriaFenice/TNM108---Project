@@ -9,6 +9,7 @@ import re
 import nltk
 import math
 import random
+from numpy import nan
 
 # Split data
 from sklearn.model_selection import train_test_split
@@ -34,20 +35,25 @@ import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import linkage, dendrogram
 
 # Import database
-movies_db = pd.read_csv('imdb (1000 movies) in june 2022.csv')
+movies_db = pd.read_csv('movies700_000.csv')
 
 # Print database
-#print(movies_db.columns)
+print(movies_db.columns)
 
 # Print summary column 
-#print(movies_db['DETAIL ABOUT MOVIE\n'])
+print(movies_db['keywords'])
+
+# Remove all movies with keywords = NaN
+movieKeywords = movies_db['keywords']
+cleanedList = [x for x in movieKeywords if not(pd.isnull(x)) == True]
+print(cleanedList)
 
 # Create TFI-DF matrix
 tfidf_vectorizer = TfidfVectorizer(stop_words=set(stopwords.words('english')))
-tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\r\n'])
+tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['keywords'])
 
-#print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
-
+print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
+'''
 # Calculate simularity 
 search_movie = random.randint(0,999) # Take a random movie from the database
 print("Index of movie: ", search_movie)
@@ -80,7 +86,7 @@ print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][search_movie])
 
 print("\nFound movie title: " + movies_db['movie name\r\n'][index])
 print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][index])
-
+'''
 # DENDOGRAM - works but messy!
 '''similarity_distance = 1 - cosine_similarity(tfidf_matrix)
 mergings = linkage(similarity_distance, method='complete')
