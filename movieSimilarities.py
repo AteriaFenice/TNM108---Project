@@ -23,7 +23,7 @@ from sklearn.preprocessing import FunctionTransformer
 # Stopwords
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-nltk.download('stopwords')
+#nltk.download('stopwords')
 
 # Cosine simluarity
 from sklearn.metrics.pairwise import cosine_similarity
@@ -32,25 +32,26 @@ from sklearn.metrics.pairwise import cosine_similarity
 movies_db = pd.read_csv('imdb (1000 movies) in june 2022.csv')
 
 # Print database
-print(movies_db.columns)
+#print(movies_db.columns)
 
 # Print summary column 
-#print(movies_db['DETAIL ABOUT MOVIE\r\n'])
+#print(movies_db['DETAIL ABOUT MOVIE\n'])
 
 # Split data into training and test 
 #movies_train, movies_test, target_train, target_test = train_test_split(movies_db['DETAIL ABOUT MOVIE\r\n'], movies_db['DETAIL ABOUT MOVIE\r\n'], test_size = 0.20, random_state = 12)
 
 # Create TFI-DF matrix
 tfidf_vectorizer = TfidfVectorizer(stop_words=set(stopwords.words('english')))
-tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\r\n'])
+tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\n'])
 
-print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
+#print(tfidf_matrix.shape) # Consits of 1000 rows (movies) and 5715 columns (tf-idf terms)
 
 # Calculate simularity 
 search_movie = 223
+print("Index of movie: ", search_movie)
 cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
-print(cos_similarity)
-print(cos_similarity.shape)
+#print(cos_similarity)
+#print(cos_similarity.shape)
 
 # Find the movie that is closes to the given movie
 # Search for the cloest to the value sent in, returns the index number
@@ -64,18 +65,19 @@ difference_array = np.delete(difference_array, index)
 
 # Find the index of minimum element from the array
 index = difference_array.argmin()
-print(index)
+print("Index of found movie: ", index)
+print("Max similarity: ", 1.0-difference_array.min(), "\n") # print max similarity
 
 # Take the cos similarity and calculate the angle
-angle_in_radius = math.acos(cos_similarity[search_movie][index])
+#angle_in_radius = math.acos(cos_similarity[search_movie][index])
 
 print("Movie title: " + movies_db['movie name\r\n'][search_movie])
-print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][search_movie])
+print("\nMovie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][search_movie])
 
 print("\nFound movie title: " + movies_db['movie name\r\n'][index])
-print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\r\n'][index])
+print("\nFound movie plot: " + movies_db['DETAIL ABOUT MOVIE\n'][index])
 print("\nFound movie degree: ")
-print(math.degrees(angle_in_radians))
+#print(math.degrees(angle_in_radians))
 
 
 
