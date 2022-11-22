@@ -49,6 +49,7 @@ tfidf_matrix = tfidf_vectorizer.fit_transform(movies_db['DETAIL ABOUT MOVIE\n'])
 
 # Calculate simularity 
 search_movie = random.randint(0,999)
+search_movie = random.randint(0,999) # Take a random movie from the database
 print("Index of movie: ", search_movie)
 cos_similarity = cosine_similarity(tfidf_matrix[search_movie], tfidf_matrix)
 #print(cos_similarity)
